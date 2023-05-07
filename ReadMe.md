@@ -1,5 +1,6 @@
 ❯ 
 # Run App
+pip install -U flask-cors
 flask --app app run    
 
 # Endpoints

@@ -1,9 +1,10 @@
 from flask import Flask, request
 from data import *
 import json
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-
+cors = CORS(app)
 
 @app.route("/totals")
 def totals():
