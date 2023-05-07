@@ -48,7 +48,7 @@ def gen_pies(client_id):
     grouped_df.head()
 
     for index, row in grouped_df.iterrows():
-        porcentaje = (row['monto_transaccion'] / total_ser[client_id][row['fecha_transaccion']])
+        porcentaje = (row['monto_transaccion'] / total_ser[client_id][row['fecha_transaccion']]) * 100
         porcentaje_list.append(porcentaje)
 
     data = {'porcentaje': porcentaje_list}
