@@ -36,6 +36,11 @@ def histograms():
     client_id = int(request.args.get('client_id'))
     return gen_histograms(client_id)
 
+@app.route("/savings")
+def savings():
+    client_id = int(request.args.get('client_id'))
+    return gen_savings(client_id)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

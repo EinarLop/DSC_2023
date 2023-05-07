@@ -67,6 +67,22 @@ def gen_pies(client_id):
     return pies_dict
 
 
+def gen_savings(client_id):
+    test_per_df = trans_df.copy()
+    client_per_df = test_per_df.loc[test_per_df['id_cliente'] == client_id].copy()
+    savings = client_per_df.groupby(['id_cliente', 'fecha_transaccion', 'mcc_nombre'])['monto_transaccion'].agg(['sum', 'count']).reset_index()
+
+    savings_dict = {}
+    for index, row in savings.iterrows():
+        if not savings_dict.get(row['fecha_transaccion']):
+            savings_dict[row['fecha_transaccion']] = {}
+        savings_dict[row['fecha_transaccion']][row['mcc_nombre']] = {'monto': row['sum'], 'transaccion': row['count']}
+    return savings_dict
+
+
+
+
+
 # def new_cv():
 #     trans_df.loc[:, 'fecha_transaccion'] = pd.to_datetime(trans_df['fecha_transaccion'])
 #     trans_df.loc[:, 'fecha_transaccion'] = trans_df.loc[:, 'fecha_transaccion'].dt.month
@@ -74,5 +90,6 @@ def gen_pies(client_id):
 #
 #
 # new_cv()
+
 
 
