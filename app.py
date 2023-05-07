@@ -18,10 +18,13 @@ def totals():
 
 @app.route("/pies")
 def pies():
-    current = {1: {"mcc": ["A", "B", "C", "D"], "percentage": [0.1, 0.4, 0.2, 0.3]},
-               2: {"mcc": ["A", "B", "C", "D"], "percentage": [0.1, 0.4, 0.2, 0.3]},
-               4: {"mcc": ["A", "B", "C", "D"], "percentage": [0.1, 0.4, 0.2, 0.3]}}
-    return json.dumps(current, indent=4)
+    # current = {1: {"mcc": ["A", "B", "C", "D"], "percentage": [0.1, 0.4, 0.2, 0.3]},
+    #            2: {"mcc": ["A", "B", "C", "D"], "percentage": [0.1, 0.4, 0.2, 0.3]},
+    #            4: {"mcc": ["A", "B", "C", "D"], "percentage": [0.1, 0.4, 0.2, 0.3]}}
+    # return json.dumps(current, indent=4)
+    client_id = int(request.args.get('client_id'))
+    return gen_pies(client_id)
+
 
 
 @app.route("/histograms")

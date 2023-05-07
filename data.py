@@ -31,6 +31,42 @@ def gen_histograms(client_id):
     return histograms_dict
 
 
+def gen_pies(client_id):
+    test_df = trans_df.copy()
+    client_df = test_df.loc[test_df['id_cliente'] == client_id].copy()
+    client_df.groupby(['id_cliente', 'fecha_transaccion'])['monto_transaccion'].sum()
+    porcentaje_list = []
+
+    client_per_df = test_df.loc[test_df['id_cliente'] == client_id].copy()
+    client_per_df.groupby(['id_cliente', 'fecha_transaccion', 'mcc_nombre'])['monto_transaccion'].count()
+
+    client_new_df = test_df.loc[test_df['id_cliente'] == client_id].copy()
+
+    total_ser = client_df.groupby(['id_cliente', 'fecha_transaccion'])['monto_transaccion'].sum()
+    grouped_ser = client_new_df.groupby(['id_cliente', 'fecha_transaccion', 'mcc_nombre'])['monto_transaccion'].sum()
+    grouped_df = grouped_ser.reset_index()
+    grouped_df.head()
+
+    for index, row in grouped_df.iterrows():
+        porcentaje = (row['monto_transaccion'] / total_ser[client_id][row['fecha_transaccion']])
+        porcentaje_list.append(porcentaje)
+
+    data = {'porcentaje': porcentaje_list}
+    porcentaje = pd.DataFrame(data)
+
+    grouped_df['per'] = porcentaje
+
+    pies_dict = {}
+    for index, row in grouped_df.iterrows():
+        if not pies_dict.get(row['fecha_transaccion']):
+            pies_dict[row['fecha_transaccion']] = {"mcc": [row['mcc_nombre']], "count": [row['per']]}
+        else:
+            pies_dict[row['fecha_transaccion']]["mcc"].append(row['mcc_nombre'])
+            pies_dict[row['fecha_transaccion']]["count"].append(row['per'])
+
+    return pies_dict
+
+
 # def new_cv():
 #     trans_df.loc[:, 'fecha_transaccion'] = pd.to_datetime(trans_df['fecha_transaccion'])
 #     trans_df.loc[:, 'fecha_transaccion'] = trans_df.loc[:, 'fecha_transaccion'].dt.month
@@ -38,3 +74,5 @@ def gen_histograms(client_id):
 #
 #
 # new_cv()
+
+
